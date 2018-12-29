@@ -5,11 +5,9 @@ import store from './store'
 import './registerServiceWorker'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
-// import contactList from './components/contact/ContactList.vue'
 Vue.config.productionTip = false
 
 Vue.use(Vuetify)
-// Vue.components('contact-list', contactList)
 new Vue({
   el: '#app',
   router,
