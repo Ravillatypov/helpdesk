@@ -1,89 +1,66 @@
 export default {
     state: {
-        contacts: [{
-            id: 'fger',
-            first: "test",
-            last: "last",
-            staff: "staff",
-            company: "Layt",
-            phones: [{
-                    phone: "1921",
-                    tag: "voip"
-                },
-                {
-                    phone: "799345234",
-                    tag: "mobail"
-                }
-            ],
-            emails: [{
-                    email: "las@fir.rt",
-                    tag: "work"
-                },
-                {
-                    email: "df.rf@dfg.hy",
-                    tag: "personal"
-                }
-            ],
-            description: " test message",
-            address: "Kazan, Ershova 16"
-        }, {
-            id: '1',
-            first: "test",
-            last: "last",
-            staff: "staff",
-            company: "JDL",
-            phones: [{
-                    phone: "1921",
-                    tag: "voip"
-                },
-                {
-                    phone: "799345234",
-                    tag: "mobail"
-                }
-            ],
-            emails: [{
-                    email: "las@fir.rt",
-                    tag: "work"
-                },
-                {
-                    email: "df.rf@dfg.hy",
-                    tag: "personal"
-                }
-            ],
-            description: " test message",
-            address: "Kazan, Ershova 16"
-        }]
+        contacts: []
     },
     actions: {
-        addContact({
+        deleteContact({
             commit
         }, contact) {
-            commit('ADD_contact', contact)
+            commit('DELETE_contact', contact)
+        },
+        editContact({
+            commit
+        }, contact) {
+            commit('UPDATE_contact', contact)
         }
     },
     mutations: {
-        ADD_contact(state, contact) {
-            state.contacts.push(contact)
+        UPDATE_contact(state, contact) {
+            if (contact.id.length > 0) {
+                const index = state.contacts.findIndex(v => v.id == contact.id)
+                if (index == -1) {
+                    contact.id = Math.random().toString()
+                    state.contacts.push(contact)
+                } else {
+                    state.contacts[index] = contact
+                }
+            } else {
+                contact.id = Math.random().toString()
+                state.contacts.push(contact)
+            }
+            console.log(state.contacts)
+        },
+        DELETE_contact(state, contact) {
+            const index = state.contacts.findIndex(v => v.id == contact.id)
+            if (index >= 0) state.contacts.splice(index, 1)
+
         }
     },
     getters: {
         getContacts(state) {
             return state.contacts
         },
-        getContactByID(state){
+        getContactByID(state) {
             return id => {
-                return state.contacts.find(it => it.id == id)
+                const index = state.contacts.findIndex(it => it.id == id)
+                if (index < 0) throw 'not found'
+                else
+                return state.contacts[index]
             }
         },
         getContactList(state) {
             return state.contacts.map((item) => {
                 return {
                     id: item.id,
-                    name: `${item.first} ${item.last}`,
-                    phone: item.phones.map((item) => {return ' ' + item.phone }).toString(),
-                    email: item.emails.map((item) => {return ' ' + item.email}).toString(),
+                    name: item.name,
+                    phone: item.phones.map((it) => {
+                        return ' +7' + it.val
+                    }).toString(),
+                    email: item.mails.map((it) => {
+                        return ' ' + it.val
+                    }).toString(),
                     company: item.company,
-                    staff: item.staff,
+                    job: item.job,
                     value: false
                 }
             })

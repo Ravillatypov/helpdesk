@@ -7,9 +7,6 @@
             <v-flex xs6>
               <v-subheader v-if="item.heading">{{ item.heading }}</v-subheader>
             </v-flex>
-            <v-flex xs6 class="text-xs-center">
-              <a href="#!" class="body-2 black--text">EDIT</a>
-            </v-flex>
           </v-layout>
           <v-list-group
             v-else-if="item.children"
@@ -83,18 +80,16 @@
       <v-icon>add</v-icon>
     </v-btn>
 
-  <v-dialog v-model="dialog" width="800px">
-    <contact-edit :isnew="true" v-on:cancel="dialog=false"></contact-edit>
-  </v-dialog>
+    <contact-new cid="" :opened="dialog" v-on:close="dialog=false"></contact-new>
   </v-app>
 </template>
 
 <script>
-import CE from './components/contact/ContactEdit.vue'
+import contactEdit from "./components/contact/ContactEdit.vue";
 export default {
   data: () => ({
     dialog: false,
-    drawer: null,
+    drawer: false,
     items: [
       { icon: "contacts", text: "Contacts" },
       { icon: "history", text: "Frequently contacted" },
@@ -148,11 +143,8 @@ export default {
       }
     ]
   }),
-  props: {
-    source: String
-  },
   components: {
-    contactEdit: CE
+    'contact-new': contactEdit
   }
 };
 </script>
